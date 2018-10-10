@@ -57,7 +57,7 @@ and the queries in our application to generate
 more up to date version of the schema run:
 
 ```bash
-env REACT_APP_API_KEY=YOUR_API_KEY yarn run schema:download`
+env REACT_APP_API_KEY=YOUR_API_KEY yarn run schema:download
 ```
 
 [src/types](src/types) contains the default generated type information based on
