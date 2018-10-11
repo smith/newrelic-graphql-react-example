@@ -69,11 +69,30 @@ If you change your queries you can run:
 yarn run codegen:generate
 ```
 
-to generate updated type annotations.
+to generate updated type annotations. Adding `--watch` will run a process to
+continuously update the annotations when queries are changed.
 
 [src/index.tsx](src/index.tsx) imports the `ExampleQuery` type and uses it to
 specify the type of the `data` object in the query. Your text editor can provide
 autocompletion and inline documentation for these types.
+
+### Deployment to production
+
+DON'T!
+
+This repository is for example purposes only. If you compile the code and host
+it publically, _your API key WILL BE COMPROMISED_. Since this is a front-end
+only JavaScript application, anyone using the application will be able to see
+your API key in the request headers used in the GraphQL queries.
+
+If you must make a build of the static files, it can be done with:
+
+```bash
+yarn run build
+```
+
+Creating an application that securely provides API authentication without
+compromising an API key is left as an exercise to the reader.
 
 ### What's next?
 
