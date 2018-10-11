@@ -72,7 +72,7 @@ yarn run codegen:generate
 to generate updated type annotations. Adding `--watch` will run a process to
 continuously update the annotations when queries are changed.
 
-[src/index.tsx](src/index.tsx) imports the `ExampleQuery` type and uses it to
+For example, [src/index.tsx](src/index.tsx) imports the `UserQuery` type and uses it to
 specify the type of the `data` object in the query. Your text editor can provide
 autocompletion and inline documentation for these types.
 
