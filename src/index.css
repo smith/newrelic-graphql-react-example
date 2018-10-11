@@ -1,5 +1,50 @@
 body {
   margin: 1em;
   padding: 0;
-  font-family: sans-serif;
+  font-family: "Open Sans", sans-serif;
+}
+
+.greeting {
+  font-size: 32px;
+  line-height: 24px;
+  margin-right: 16px;
+}
+
+.CloudProviderList {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.CloudProviderList > p {
+  flex: 0 0 100%;
+}
+
+.CloudProvider {
+  border: 1px solid rgb(210, 210, 210);
+  color: #555;
+  display: block;
+  height: 99px;
+  margin: 0 20px 20px 0;
+  padding: 5px 16px 16px 16px;
+  text-decoration: none;
+  min-width: 168px;
+  text-align: center;
+}
+
+.CloudProvider:hover {
+  background-color: #fafbfb;
+}
+
+.CloudProvider > img {
+  display: block;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.CloudProvider > span {
+  display: block;
+  font-size: 14px;
+  line-height: 19.04px;
+  margin-top: 25px;
+  text-align: center;
 }

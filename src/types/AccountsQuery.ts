@@ -2,24 +2,25 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: ExampleQuery
+// GraphQL query operation: AccountsQuery
 // ====================================================
 
-export interface ExampleQuery_actor_user {
+export interface AccountsQuery_actor_accounts {
+  id: number | null;
   name: string | null;
 }
 
-export interface ExampleQuery_actor {
+export interface AccountsQuery_actor {
   /**
-   * The `User` that is associated with the API key used in this request.
+   * The `accounts` field returns all accounts that the Actor is authorized to view.
    */
-  user: ExampleQuery_actor_user | null;
+  accounts: (AccountsQuery_actor_accounts | null)[] | null;
 }
 
-export interface ExampleQuery {
+export interface AccountsQuery {
   /**
    * The `actor` field is the top-level entry into all data that is scoped
    * to the API user's access level.
    */
-  actor: ExampleQuery_actor | null;
+  actor: AccountsQuery_actor | null;
 }

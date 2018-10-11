@@ -1,15 +1,18 @@
 import ApolloClient from "apollo-boost";
 import gql from "graphql-tag";
-import * as React from "react";
+import React, { PureComponent } from "react";
 import { render } from "react-dom";
 import { ApolloProvider, Query } from "react-apollo";
 
-import { ExampleQuery } from "types/ExampleQuery";
+import { AccountSelect } from "./AccountSelect";
+import { CloudProviderList } from "./CloudProviderList";
+import { AccountId } from "./types";
+import { UserQuery } from "./types/UserQuery";
 
 import "./index.css";
 
 const query = gql`
-  query ExampleQuery {
+  query UserQuery {
     actor {
       user {
         name
@@ -23,27 +26,57 @@ const client = new ApolloClient({
   uri: "https://api.newrelic.com/graphql"
 });
 
-const App = () => (
-  <ApolloProvider client={client}>
-    <Query<ExampleQuery> query={query}>
-      {({ data, loading, error }) => {
-        if (error) {
-          return <div>{error.message}</div>;
-        }
-        if (loading) {
-          return <div>Loading…</div>;
-        }
+type State = { accountId: AccountId };
 
-        // Since it's possible that intermediate objects in the graph could be
-        // null or undefined, ensure all properties exist and have a fallback.
-        const name =
-          (data && data.actor && data.actor.user && data.actor.user.name) ||
-          "Unknown user";
+class App extends PureComponent<{}, State> {
+  state: State = {
+    accountId: null
+  };
 
-        return <div>Hello, {name}!</div>;
-      }}
-    </Query>
-  </ApolloProvider>
-);
+  handleChange = (event: { target: { value: string } }) => {
+    const value = parseInt(event.target.value, 10);
+    this.setState({ accountId: isNaN(value) ? null : value });
+  };
+
+  render() {
+    return (
+      <ApolloProvider client={client}>
+        <Query<UserQuery> query={query}>
+          {({ data, error, loading }) => {
+            if (error) {
+              return <div>{error.message}</div>;
+            }
+
+            // Since it's possible that intermediate objects in the graph could be
+            // null or undefined, ensure all properties exist and have a fallback.
+            const name =
+              (data && data.actor && data.actor.user && data.actor.user.name) ||
+              "Unknown user";
+
+            return (
+              <div>
+                <span
+                  style={{
+                    fontSize: "24px",
+                    lineHeight: "32px",
+                    marginRight: 16
+                  }}
+                >
+                  {loading ? "Loading…" : `Hello, ${name}!`}
+                </span>
+                <AccountSelect
+                  selectedAccountId={this.state.accountId}
+                  style={{ marginBottom: 16 }}
+                  onChange={this.handleChange}
+                />
+                <CloudProviderList accountId={this.state.accountId} />
+              </div>
+            );
+          }}
+        </Query>
+      </ApolloProvider>
+    );
+  }
+}
 
 render(<App />, document.getElementById("root"));
