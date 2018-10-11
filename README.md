@@ -18,8 +18,8 @@ Run `yarn` to install the dependencies.
 You'll need an API key to authenticate against the GraphQL API. Go to the
 [New Relic GraphQL API explorer](https://api.newrelic.com/graphiql) and log in if prompted.
 
-Select an existing API key or create a new API key from the the dropdown menu in
-the GraphiQL title bar.
+Select an existing API key or create a new API key by selecting an account from
+the the dropdown menu in the GraphiQL title bar.
 
 Create a GraphQL query to get your API key. It should look like:
 
