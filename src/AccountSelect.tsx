@@ -1,5 +1,5 @@
 import gql from "graphql-tag";
-import React, { CSSProperties, StatelessComponent } from "react";
+import React, { StatelessComponent } from "react";
 import { Query } from "react-apollo";
 
 import { AccountId } from "./types";
@@ -19,7 +19,6 @@ const query = gql`
 export interface Props {
   onChange: (event: { target: { value: string } }) => void;
   selectedAccountId: AccountId;
-  style?: CSSProperties;
 }
 
 export const AccountSelect: StatelessComponent<Props> = props => (
@@ -42,7 +41,6 @@ export const AccountSelect: StatelessComponent<Props> = props => (
         <select
           disabled={loading}
           onChange={props.onChange}
-          style={props.style}
           value={props.selectedAccountId || undefined}
         >
           <option>Select an account…</option>

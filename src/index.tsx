@@ -55,18 +55,11 @@ class App extends PureComponent<{}, State> {
 
             return (
               <div>
-                <span
-                  style={{
-                    fontSize: "24px",
-                    lineHeight: "32px",
-                    marginRight: 16
-                  }}
-                >
+                <span className="greeting">
                   {loading ? "Loading…" : `Hello, ${name}!`}
                 </span>
                 <AccountSelect
                   selectedAccountId={this.state.accountId}
-                  style={{ marginBottom: 16 }}
                   onChange={this.handleChange}
                 />
                 <CloudProviderList accountId={this.state.accountId} />
