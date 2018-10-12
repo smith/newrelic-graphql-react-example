@@ -6,7 +6,7 @@ import { ApolloProvider, Query } from "react-apollo";
 
 import { AccountSelect } from "./AccountSelect";
 import { CloudProviderList } from "./CloudProviderList";
-import { AccountId } from "./types";
+import { AccountId, ChangeEvent } from "./types";
 import { UserQuery } from "./types/UserQuery";
 
 import "./index.css";
@@ -33,8 +33,8 @@ class App extends PureComponent<{}, State> {
     accountId: null
   };
 
-  handleChange = (event: { target: { value: string } }) => {
-    const value = parseInt(event.target.value, 10);
+  handleChange = (event: ChangeEvent) => {
+    const value = parseInt(event.target.value as string, 10);
     this.setState({ accountId: isNaN(value) ? null : value });
   };
 

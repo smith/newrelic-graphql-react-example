@@ -2,7 +2,7 @@ import gql from "graphql-tag";
 import React, { StatelessComponent } from "react";
 import { Query } from "react-apollo";
 
-import { AccountId } from "./types";
+import { AccountId, ChangeEvent } from "./types";
 import { AccountsQuery } from "./types/AccountsQuery";
 
 const query = gql`
@@ -17,7 +17,7 @@ const query = gql`
 `;
 
 export interface Props {
-  onChange: (event: { target: { value: string } }) => void;
+  onChange: (event: ChangeEvent) => void;
   selectedAccountId: AccountId;
 }
 
@@ -26,22 +26,26 @@ export const AccountSelect: StatelessComponent<Props> = props => (
     {({ data, error, loading }) => {
       const accounts = (data && data.actor && data.actor.accounts) || [];
 
-      if (
-        accounts.length === 1 &&
-        props.selectedAccountId === null &&
-        accounts !== null &&
-        accounts[0] !== null
-      ) {
-        props.onChange({
-          target: { value: String((accounts[0] || { id: null }).id) }
-        });
+      // If there's only one account and no currently selected account, select
+      // the first one automatically
+      if (accounts.length === 1 && props.selectedAccountId === null) {
+        const value = String(
+          accounts && accounts[0] && (accounts[0] || { id: null }).id
+        );
+
+        props.onChange({ target: { value } });
       }
 
       return (
         <select
-          disabled={loading}
+          disabled={loading || accounts.length === 1}
           onChange={props.onChange}
           value={props.selectedAccountId || undefined}
+          title={
+            accounts.length === 1
+              ? "You only have one account, so this select is disabled"
+              : ""
+          }
         >
           <option>Select an account…</option>
           {accounts.length === 0 && <option>No accounts found</option>}
