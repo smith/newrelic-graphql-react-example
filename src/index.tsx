@@ -1,15 +1,15 @@
-import ApolloClient from "apollo-boost";
-import gql from "graphql-tag";
-import React, { PureComponent } from "react";
-import { render } from "react-dom";
+import "./index.css";
+
+import { AccountId, ChangeEvent } from "./types";
 import { ApolloProvider, Query } from "react-apollo";
+import React, { FunctionComponent, useCallback, useState } from "react";
 
 import { AccountSelect } from "./AccountSelect";
+import ApolloClient from "apollo-boost";
 import { CloudProviderList } from "./CloudProviderList";
-import { AccountId, ChangeEvent } from "./types";
 import { UserQuery } from "./types/UserQuery";
-
-import "./index.css";
+import gql from "graphql-tag";
+import { render } from "react-dom";
 
 const query = gql`
   query UserQuery {
@@ -26,50 +26,45 @@ const client = new ApolloClient({
   uri: "https://api.newrelic.com/graphql"
 });
 
-type State = { accountId: AccountId };
 
-class App extends PureComponent<{}, State> {
-  state: State = {
-    accountId: null
-  };
+const App: FunctionComponent = () => {
+  const [accountId, setAccountId] = useState<AccountId>(null)
 
-  handleChange = (event: ChangeEvent) => {
+  const handleChange = useCallback((event: ChangeEvent) => {
     const value = parseInt(event.target.value as string, 10);
-    this.setState({ accountId: isNaN(value) ? null : value });
-  };
+    setAccountId(isNaN(value) ? null : value);
+  }, [setAccountId]);
 
-  render() {
-    return (
-      <ApolloProvider client={client}>
-        <Query<UserQuery> query={query}>
-          {({ data, error, loading }) => {
-            if (error) {
-              return <div>{error.message}</div>;
-            }
+  return (
+    <ApolloProvider client={client}>
+      <Query<UserQuery> query={query}>
+        {({ data, error, loading }) => {
+          if (error) {
+            return <div>{error.message}</div>;
+          }
 
-            // Since it's possible that intermediate objects in the graph could be
-            // null or undefined, ensure all properties exist and have a fallback.
-            const name =
-              (data && data.actor && data.actor.user && data.actor.user.name) ||
-              "Unknown user";
+          // Since it's possible that intermediate objects in the graph could be
+          // null or undefined, ensure all properties exist and have a fallback.
+          const name =
+            (data && data.actor && data.actor.user && data.actor.user.name) ||
+            "Unknown user";
 
-            return (
-              <div>
-                <span className="greeting">
-                  {loading ? "Loading…" : `Hello, ${name}!`}
-                </span>
-                <AccountSelect
-                  selectedAccountId={this.state.accountId}
-                  onChange={this.handleChange}
-                />
-                <CloudProviderList accountId={this.state.accountId} />
-              </div>
-            );
-          }}
-        </Query>
-      </ApolloProvider>
-    );
-  }
+          return (
+            <div>
+              <span className="greeting">
+                {loading ? "Loading…" : `Hello, ${name}!`}
+              </span>
+              <AccountSelect
+                selectedAccountId={accountId}
+                onChange={handleChange}
+              />
+              <CloudProviderList accountId={accountId} />
+            </div>
+          );
+        }}
+      </Query>
+    </ApolloProvider>
+  );
 }
 
 render(<App />, document.getElementById("root"));
