@@ -1,9 +1,9 @@
-import gql from "graphql-tag";
-import React, { StatelessComponent } from "react";
-import { Query } from "react-apollo";
-
 import { AccountId, ChangeEvent } from "./types";
+import React, { FunctionComponent } from "react";
+
 import { AccountsQuery } from "./types/AccountsQuery";
+import { Query } from "react-apollo";
+import gql from "graphql-tag";
 
 const query = gql`
   query AccountsQuery {
@@ -16,12 +16,12 @@ const query = gql`
   }
 `;
 
-export interface Props {
+export interface AccountSelectProps {
   onChange: (event: ChangeEvent) => void;
   selectedAccountId: AccountId;
 }
 
-export const AccountSelect: StatelessComponent<Props> = props => (
+export const AccountSelect: FunctionComponent<AccountSelectProps> = props => (
   <Query<AccountsQuery> query={query}>
     {({ data, error, loading }) => {
       const accounts = (data && data.actor && data.actor.accounts) || [];

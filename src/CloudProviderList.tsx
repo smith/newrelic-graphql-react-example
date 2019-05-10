@@ -1,13 +1,13 @@
-import gql from "graphql-tag";
-import React, { StatelessComponent } from "react";
-import { Query } from "react-apollo";
-
-import { CloudProvider } from "./CloudProvider";
-import { AccountId } from "./types";
 import {
   CloudProvidersQuery,
   CloudProvidersQueryVariables
 } from "./types/CloudProvidersQuery";
+import React, { FunctionComponent } from "react";
+
+import { AccountId } from "./types";
+import { CloudProvider } from "./CloudProvider";
+import { Query } from "react-apollo";
+import gql from "graphql-tag";
 
 const query = gql`
   query CloudProvidersQuery($accountId: Int!) {
@@ -26,9 +26,9 @@ const query = gql`
   }
 `;
 
-export type Props = { accountId: AccountId };
+export type CloudProviderListProps = { accountId: AccountId };
 
-export const CloudProviderList: StatelessComponent<Props> = props => {
+export const CloudProviderList: FunctionComponent<CloudProviderListProps> = props => {
   if (!props.accountId) {
     return <div>Select an account</div>;
   }
